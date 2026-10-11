@@ -4,6 +4,9 @@
 <dict>
 	<key>com.apple.security.app-sandbox</key>
 	<true/>
+	<!-- Daily update check against the GitHub Releases API. -->
+	<key>com.apple.security.network.client</key>
+	<true/>
 	<!-- Finder extensions must be sandboxed; these exceptions let it create files in any folder and read ~/Library/Application Support/CreateNew. -->
 	<key>com.apple.security.temporary-exception.files.absolute-path.read-write</key>
 	<array>

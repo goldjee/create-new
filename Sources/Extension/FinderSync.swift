@@ -9,6 +9,7 @@ class FinderSync: FIFinderSync {
 
     override func menu(for menuKind: FIMenuKind) -> NSMenu? {
         guard menuKind == .contextualMenuForContainer || menuKind == .contextualMenuForItems else { return nil }
+        checkForUpdateIfDue()
         let types = FileTypes.load()
         guard !types.isEmpty else { return nil }
 
@@ -24,6 +25,24 @@ class FinderSync: FIFinderSync {
         let root = menu.addItem(withTitle: NSLocalizedString("Create New…", comment: "Finder submenu"), action: nil, keyEquivalent: "")
         menu.setSubmenu(submenu, for: root)
         return menu
+    }
+
+    /// Once a day: if GitHub has a release not announced yet, open the app, which offers the update.
+    private func checkForUpdateIfDue() {
+        let defaults = UserDefaults.standard
+        let lastCheck = defaults.object(forKey: "lastUpdateCheck") as? Date ?? .distantPast
+        guard Date().timeIntervalSince(lastCheck) > 24 * 60 * 60 else { return }
+        defaults.set(Date(), forKey: "lastUpdateCheck")
+
+        Task { @MainActor in
+            guard let release = try? await Updates.latest(),
+                  Updates.isNewer(release.version, than: Updates.currentVersion),
+                  defaults.string(forKey: "announcedVersion") != release.version else { return }
+            defaults.set(release.version, forKey: "announcedVersion")
+            // CreateNew.app/Contents/PlugIns/CreateNewExtension.appex
+            let app = Bundle.main.bundleURL.deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+            _ = try? await NSWorkspace.shared.openApplication(at: app, configuration: NSWorkspace.OpenConfiguration())
+        }
     }
 
     @objc func createFile(_ sender: NSMenuItem) {

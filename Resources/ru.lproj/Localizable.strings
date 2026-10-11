@@ -25,3 +25,9 @@
 "Finder extension is disabled." = "Расширение Finder выключено.";
 "Extension Settings…" = "Настройки расширения…";
 "Enable Finder Extension" = "Включить расширение Finder";
+"Create New %@ is available" = "Доступна версия Create New %@";
+"You have version %@. Update now?" = "У вас версия %@. Обновить сейчас?";
+"Update" = "Обновить";
+"Later" = "Позже";
+"The update couldn't be installed" = "Не удалось установить обновление";
+"The downloaded update isn't valid." = "Загруженное обновление не прошло проверку.";

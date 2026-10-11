@@ -43,6 +43,16 @@ struct SelfTest {
             check(false, "placeholder mismatch in ru: \(key)")
         }
 
+        // Update version comparison and release parsing.
+        check(Updates.isNewer("v1.1.0", than: "1.0.0"), "1.1.0 > 1.0.0")
+        check(Updates.isNewer("1.10.0", than: "1.9.9"), "1.10.0 > 1.9.9")
+        check(!Updates.isNewer("1.0", than: "1.0.0") && !Updates.isNewer("1.0.0", than: "1.0"), "1.0 == 1.0.0")
+        check(!Updates.isNewer("v0.9.0", than: "1.0.0"), "older is not newer")
+        let json = #"{"tag_name":"v1.2.0","html_url":"https://github.com/goldjee/create-new/releases/tag/v1.2.0","#
+            + #""assets":[{"name":"CreateNew.dmg","browser_download_url":"https://example.com/CreateNew.dmg"}]}"#
+        let release = try JSONDecoder().decode(Release.self, from: Data(json.utf8))
+        check(release.version == "1.2.0" && release.assets.first?.name == "CreateNew.dmg", "release decoding")
+
         print("selftest: all checks passed")
     }
 

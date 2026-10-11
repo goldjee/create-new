@@ -13,6 +13,8 @@ You can change the list of file types in the app. Works on Apple Silicon Macs wi
    ```
 3. Open the app and click **Enable Finder Extension**.
 
+The app checks for a new version once a day and asks before updating.
+
 ## Templates
 
 New Word, Excel and PowerPoint files start from a blank template. Other files start empty.

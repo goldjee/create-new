@@ -17,6 +17,9 @@ jobs:
       - uses: actions/checkout@v4
       - name: Build, test and package
         run: ./build.sh --test --dmg
+        env:
+          # The updater compares this with the latest release tag.
+          VERSION: ${{ github.ref_type == 'tag' && github.ref_name || '' }}
       - uses: actions/upload-artifact@v4
         with:
           name: CreateNew-dmg

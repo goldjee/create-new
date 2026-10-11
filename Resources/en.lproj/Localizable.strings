@@ -25,3 +25,9 @@
 "Finder extension is disabled." = "Finder extension is disabled.";
 "Extension Settings…" = "Extension Settings…";
 "Enable Finder Extension" = "Enable Finder Extension";
+"Create New %@ is available" = "Create New %@ is available";
+"You have version %@. Update now?" = "You have version %@. Update now?";
+"Update" = "Update";
+"Later" = "Later";
+"The update couldn't be installed" = "The update couldn't be installed";
+"The downloaded update isn't valid." = "The downloaded update isn't valid.";

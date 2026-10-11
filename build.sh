@@ -2,6 +2,7 @@
 # Builds "Create New.app" (arm64, ad-hoc signed) into build/.
 #   --test  run the self-test first
 #   --dmg   also package build/CreateNew.dmg
+# VERSION=v1.2.3 stamps that version into both bundles (CI sets it from the release tag).
 set -euo pipefail
 cd "$(dirname "$0")"
 
@@ -30,6 +31,12 @@ cp Resources/Extension-Info.plist "$APPEX/Contents/Info.plist"
 cp -R Resources/Templates "$APPEX/Contents/Resources/"
 cp -R Resources/*.lproj "$APP/Contents/Resources/"
 cp -R Resources/*.lproj "$APPEX/Contents/Resources/"
+if [[ -n "${VERSION:-}" ]]; then
+  for plist in "$APP/Contents/Info.plist" "$APPEX/Contents/Info.plist"; do
+    plutil -replace CFBundleShortVersionString -string "${VERSION#v}" "$plist"
+    plutil -replace CFBundleVersion -string "${VERSION#v}" "$plist"
+  done
+fi
 
 # Inside-out ad-hoc signing: the extension needs its sandbox entitlements, the app needs none.
 codesign --force --sign - --entitlements Resources/Extension.entitlements "$APPEX"
