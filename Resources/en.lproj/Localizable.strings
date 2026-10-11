@@ -31,3 +31,13 @@
 "Later" = "Later";
 "The update couldn't be installed" = "The update couldn't be installed";
 "The downloaded update isn't valid." = "The downloaded update isn't valid.";
+"File Types" = "File Types";
+"Updates" = "Updates";
+"Check for updates automatically" = "Check for updates automatically";
+"Once a day, Create New checks GitHub for a new version and asks before installing it." = "Once a day, Create New checks GitHub for a new version and asks before installing it.";
+"Version %@" = "Version %@";
+"View releases on GitHub" = "View releases on GitHub";
+"Check for updates automatically?" = "Check for updates automatically?";
+"Once a day, Create New will check GitHub for a new version and ask before installing it. You can change this later in the Updates tab." = "Once a day, Create New will check GitHub for a new version and ask before installing it. You can change this later in the Updates tab.";
+"Check Automatically" = "Check Automatically";
+"Don't Check" = "Don't Check";

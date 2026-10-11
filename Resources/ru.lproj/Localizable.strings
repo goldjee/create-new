@@ -31,3 +31,13 @@
 "Later" = "Позже";
 "The update couldn't be installed" = "Не удалось установить обновление";
 "The downloaded update isn't valid." = "Загруженное обновление не прошло проверку.";
+"File Types" = "Типы файлов";
+"Updates" = "Обновления";
+"Check for updates automatically" = "Проверять обновления автоматически";
+"Once a day, Create New checks GitHub for a new version and asks before installing it." = "Раз в день Create New проверяет GitHub на наличие новой версии и спрашивает перед установкой.";
+"Version %@" = "Версия %@";
+"View releases on GitHub" = "Все версии на GitHub";
+"Check for updates automatically?" = "Проверять обновления автоматически?";
+"Once a day, Create New will check GitHub for a new version and ask before installing it. You can change this later in the Updates tab." = "Раз в день Create New будет проверять GitHub на наличие новой версии и спрашивать перед установкой. Это можно изменить на вкладке «Обновления».";
+"Check Automatically" = "Проверять";
+"Don't Check" = "Не проверять";

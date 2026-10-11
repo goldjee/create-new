@@ -13,7 +13,7 @@ You can change the list of file types in the app. Works on Apple Silicon Macs wi
    ```
 3. Open the app and click **Enable Finder Extension**.
 
-The app checks for a new version once a day and asks before updating.
+On first launch the app asks whether to check for updates daily. You can change this in the **Updates** tab.
 
 ## Templates
 

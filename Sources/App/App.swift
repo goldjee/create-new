@@ -12,13 +12,59 @@ struct CreateNewApp: App {
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
-        Task { await Updater.checkAndOffer() }
+        if Updates.autoCheck() == nil {
+            let alert = NSAlert()
+            alert.messageText = NSLocalizedString("Check for updates automatically?", comment: "")
+            alert.informativeText = NSLocalizedString(
+                "Once a day, Create New will check GitHub for a new version and ask before installing it. You can change this later in the Updates tab.",
+                comment: "")
+            alert.addButton(withTitle: NSLocalizedString("Check Automatically", comment: ""))
+            alert.addButton(withTitle: NSLocalizedString("Don't Check", comment: ""))
+            try? Updates.setAutoCheck(alert.runModal() == .alertFirstButtonReturn)
+        }
+        if Updates.autoCheck() == true {
+            Task { await Updater.checkAndOffer() }
+        }
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool { true }
 }
 
 struct SettingsView: View {
+    var body: some View {
+        TabView {
+            FileTypesView().tabItem { Text("File Types") }
+            UpdatesView().tabItem { Text("Updates") }
+        }
+        .padding()
+    }
+}
+
+struct UpdatesView: View {
+    @State private var autoCheck = Updates.autoCheck() ?? false
+    @State private var saveError: String?
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Toggle("Check for updates automatically", isOn: $autoCheck)
+            Text("Once a day, Create New checks GitHub for a new version and asks before installing it.")
+                .foregroundStyle(.secondary)
+            if let saveError { Text(saveError).foregroundStyle(.red) }
+            Divider()
+            Text(String(format: NSLocalizedString("Version %@", comment: ""), Updates.currentVersion))
+            Link("View releases on GitHub", destination: Updates.releasesURL)
+            Spacer()
+        }
+        .padding()
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .onAppear { autoCheck = Updates.autoCheck() ?? false }
+        .onChange(of: autoCheck) { on in
+            do { try Updates.setAutoCheck(on); saveError = nil } catch { saveError = error.localizedDescription }
+        }
+    }
+}
+
+struct FileTypesView: View {
     @State private var types = FileTypes.load()
     @State private var selection: FileType.ID?
     @State private var enabled = FIFinderSyncController.isExtensionEnabled

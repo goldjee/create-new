@@ -29,6 +29,7 @@ class FinderSync: FIFinderSync {
 
     /// Once a day: if GitHub has a release not announced yet, open the app, which offers the update.
     private func checkForUpdateIfDue() {
+        guard Updates.autoCheck() == true else { return }
         let defaults = UserDefaults.standard
         let lastCheck = defaults.object(forKey: "lastUpdateCheck") as? Date ?? .distantPast
         guard Date().timeIntervalSince(lastCheck) > 24 * 60 * 60 else { return }

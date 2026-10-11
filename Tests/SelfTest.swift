@@ -53,6 +53,16 @@ struct SelfTest {
         let release = try JSONDecoder().decode(Release.self, from: Data(json.utf8))
         check(release.version == "1.2.0" && release.assets.first?.name == "CreateNew.dmg", "release decoding")
 
+        // Auto-update setting: unanswered until saved, nil again if the file is corrupt.
+        let updates = dir.appendingPathComponent("updates.json")
+        check(Updates.autoCheck(from: updates) == nil, "unanswered -> nil")
+        try Updates.setAutoCheck(true, to: updates)
+        check(Updates.autoCheck(from: updates) == true, "saved true")
+        try Updates.setAutoCheck(false, to: updates)
+        check(Updates.autoCheck(from: updates) == false, "saved false")
+        try Data("garbage".utf8).write(to: updates)
+        check(Updates.autoCheck(from: updates) == nil, "corrupt -> nil")
+
         print("selftest: all checks passed")
     }
 

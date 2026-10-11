@@ -21,6 +21,21 @@ struct Release: Decodable {
 /// Shared by the app (offers and installs updates) and the Finder extension (daily check).
 enum Updates {
     static let latestURL = URL(string: "https://api.github.com/repos/goldjee/create-new/releases/latest")!
+    static let releasesURL = URL(string: "https://github.com/goldjee/create-new/releases")!
+    /// A file next to types.json, because the sandboxed extension can't reliably read the app's UserDefaults.
+    static let settingsURL = FileTypes.supportDir.appendingPathComponent("updates.json")
+
+    /// nil until the user has answered the first-launch question.
+    static func autoCheck(from url: URL = settingsURL) -> Bool? {
+        guard let data = try? Data(contentsOf: url),
+              let settings = try? JSONDecoder().decode([String: Bool].self, from: data) else { return nil }
+        return settings["autoCheck"]
+    }
+
+    static func setAutoCheck(_ on: Bool, to url: URL = settingsURL) throws {
+        try FileManager.default.createDirectory(at: url.deletingLastPathComponent(), withIntermediateDirectories: true)
+        try JSONEncoder().encode(["autoCheck": on]).write(to: url, options: .atomic)
+    }
 
     static var currentVersion: String {
         Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "0"
