@@ -41,3 +41,7 @@
 "Once a day, Create New will check GitHub for a new version and ask before installing it. You can change this later in the Updates tab." = "Once a day, Create New will check GitHub for a new version and ask before installing it. You can change this later in the Updates tab.";
 "Check Automatically" = "Check Automatically";
 "Don't Check" = "Don't Check";
+"Check Now" = "Check Now";
+"Couldn't check for updates" = "Couldn't check for updates";
+"You're up to date" = "You're up to date";
+"Create New %@ is the latest version." = "Create New %@ is the latest version.";

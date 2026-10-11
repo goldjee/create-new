@@ -42,6 +42,7 @@ struct SettingsView: View {
 
 struct UpdatesView: View {
     @State private var autoCheck = Updates.autoCheck() ?? false
+    @State private var checking = false
     @State private var saveError: String?
 
     var body: some View {
@@ -51,7 +52,13 @@ struct UpdatesView: View {
                 .foregroundStyle(.secondary)
             if let saveError { Text(saveError).foregroundStyle(.red) }
             Divider()
-            Text(String(format: NSLocalizedString("Version %@", comment: ""), Updates.currentVersion))
+            HStack {
+                Text(String(format: NSLocalizedString("Version %@", comment: ""), Updates.currentVersion))
+                Button("Check Now") {
+                    checking = true
+                    Task { await Updater.checkAndOffer(manual: true); checking = false }
+                }.disabled(checking)
+            }
             Link("View releases on GitHub", destination: Updates.releasesURL)
             Spacer()
         }

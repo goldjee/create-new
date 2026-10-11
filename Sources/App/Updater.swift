@@ -4,10 +4,28 @@ import AppKit
 enum Updater {
     struct Failure: LocalizedError { let errorDescription: String? }
 
+    /// `manual` reports "up to date" and check errors; the automatic check stays silent about them.
     @MainActor
-    static func checkAndOffer() async {
-        guard let release = try? await Updates.latest(),
-              Updates.isNewer(release.version, than: Updates.currentVersion) else { return }
+    static func checkAndOffer(manual: Bool = false) async {
+        let release: Release
+        do {
+            release = try await Updates.latest()
+        } catch {
+            guard manual else { return }
+            let alert = NSAlert(error: error)
+            alert.messageText = NSLocalizedString("Couldn't check for updates", comment: "")
+            alert.runModal()
+            return
+        }
+        guard Updates.isNewer(release.version, than: Updates.currentVersion) else {
+            guard manual else { return }
+            let alert = NSAlert()
+            alert.messageText = NSLocalizedString("You're up to date", comment: "")
+            alert.informativeText = String(format: NSLocalizedString("Create New %@ is the latest version.", comment: ""),
+                                           Updates.currentVersion)
+            alert.runModal()
+            return
+        }
 
         let alert = NSAlert()
         alert.messageText = String(format: NSLocalizedString("Create New %@ is available", comment: ""), release.version)

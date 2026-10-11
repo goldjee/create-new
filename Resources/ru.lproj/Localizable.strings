@@ -41,3 +41,7 @@
 "Once a day, Create New will check GitHub for a new version and ask before installing it. You can change this later in the Updates tab." = "Раз в день Create New будет проверять GitHub на наличие новой версии и спрашивать перед установкой. Это можно изменить на вкладке «Обновления».";
 "Check Automatically" = "Проверять";
 "Don't Check" = "Не проверять";
+"Check Now" = "Проверить сейчас";
+"Couldn't check for updates" = "Не удалось проверить обновления";
+"You're up to date" = "У вас последняя версия";
+"Create New %@ is the latest version." = "Create New %@ — последняя версия.";
